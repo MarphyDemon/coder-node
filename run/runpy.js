@@ -15,15 +15,16 @@ class RunPython {
   // 创建到运行文件
   static async createToRunFile(path, filePath, code) {
     console.log("Create file to run file")
-    await common.createFolder(path);
-    
-    common.createFile(filePath);
-    common.writeFile(filePath, code);
-    let res = await RunPython.runFile(filePath);
-    if(res){
-      common.deleteFolder(path); 
+    let createFolder = await common.createFolder(path);
+    if(createFolder){
+      await common.createFile(filePath);
+      await common.writeFile(filePath, code);
+      let res = await RunPython.runFile(filePath);
+      if(res){
+        common.deleteFolder(path);
+      }
+      return res;
     }
-    return res;
   }
 
   // 运行 文件 主函数

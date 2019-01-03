@@ -13,6 +13,10 @@ module.exports = function (sequelize, DataTypes) {
         password: {
             type: DataTypes.STRING(255),
             allowNull: false
+        },
+        power: {
+            type: DataTypes.INTEGER(11),
+            allowNull: false
         }
     }, {
         // 如果为 true 则表的名称和 model 相同，即 user

@@ -10,11 +10,12 @@ class UserModel {
      * @returns {Promise<boolean>}
      */
     static async create(user) {
-        let {username, password} = user;
+        let {username, password, power} = user;
 
         await User.create({
             username,
-            password
+            password,
+            power
         })
         return true
     }
@@ -24,12 +25,13 @@ class UserModel {
      */
     static async update(id, data) {
         await User.update({
-            password: data.password
+            password: data.password,
+            power: data.power
         }, {
             where: {
                 id
             },
-            fields: ["password"]
+            fields: ["password", "power"]
         });
         return true
     }
@@ -54,7 +56,7 @@ class UserModel {
      */
     static async findAllUserList() {
         return await User.findAll({
-            attributes: ['id', 'username']
+            attributes: ['id', 'username', 'power']
         })
     }
 

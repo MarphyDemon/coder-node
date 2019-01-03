@@ -63,7 +63,7 @@ class UserController {
         const salt = bcrypt.genSaltSync();
         const hash = bcrypt.hashSync(req.password, salt);
         req.password = hash;
-        let id = ctx.params.id;
+        let id = req.id;
         if (req) {
             await userModel.update(id, req);
 
@@ -77,7 +77,20 @@ class UserController {
             ctx.body = statusCode.ERROR_412('更新用户失败！')
         }
     }
+    static async getUserInfoById(ctx) {
+        let req = ctx.request.body;
+        let id = req.id;
+        if (id) {
+            let data = await userModel.findUserById(id);
 
+            ctx.response.status = 200;
+            ctx.body = statusCode.SUCCESS_200("查询用户成功", data);
+        } else {
+
+            ctx.response.status = 412;
+            ctx.body = statusCode.ERROR_412('查询用户失败！')
+        }
+    }
     /**
      * 查询用户信息
      * @param ctx
@@ -135,8 +148,8 @@ class UserController {
      */
     static async login(ctx) {
         const data = ctx.request.body
+        console.log(data)
         // const data = JSON.parse(ctx.request.body)
-        // console.log(data)
         // 查询用户
         const user = await userModel.findUserByName(data.username)
         // 判断用户是否存在
@@ -176,7 +189,6 @@ class UserController {
      */
     static async getUserList(ctx) {
         let userList = ctx.request.body;
-
         if (userList) {
             const data = await userModel.findAllUserList();
 

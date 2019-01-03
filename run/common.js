@@ -46,6 +46,7 @@ class FileHandle {
                 return false;
             }
         })
+        return true
     }
 
     // 创建文件
