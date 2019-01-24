@@ -18,9 +18,10 @@ class QuestionModel {
             question_templete: data.question_templete,
             question_author: user_id,
             question_grade: data.question_grade,
-            question_pass: data.question_pass,
-            question_count: data.question_count,
-            question_status: data.question_status
+            question_pass: data.question_pass||0,
+            question_count: data.question_count||0,
+            question_status: data.question_status||0,
+            question_right_code: data.question_right_code
         })
     }
 
@@ -39,12 +40,13 @@ class QuestionModel {
             question_grade: data.question_grade,
             question_pass: data.question_pass,
             question_count: data.question_count,
-            question_status: data.question_status
+            question_status: data.question_status,
+            question_right_code: data.question_right_code
         }, {
             where: {
                 id
             },
-            fields: ['question_title', 'question_des', 'question_example', 'question_templete', 'question_grade', 'question_pass', 'question_count', 'question_status']
+            fields: ['question_title', 'question_des', 'question_example', 'question_templete', 'question_grade', 'question_pass', 'question_count', 'question_status','question_right_code']
         });
         return true
     }

@@ -17,9 +17,7 @@ class QuestionController {
             && req.question_templete
             && user.user_id
             && req.question_grade
-            && req.question_pass
-            && req.question_count
-            && req.question_status
+            && req.question_right_code
         ) {
             try {
                 const ret = await QuestionModel.createQuestion(req, user.user_id);

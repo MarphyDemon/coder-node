@@ -5,6 +5,7 @@ const ArticleController = require('../controllers/article')
 const QuestionController = require('../controllers/question')
 const TestCodeController = require('../controllers/test_code')
 const ResultController = require('../controllers/result')
+const AllApiController = require("../controllers/allApi")
 
 const router = new Router({
     prefix: '/api/v1'
@@ -29,6 +30,8 @@ router.get('/user/list', UserController.getUserList);
 router.post('/user/update', UserController.update);
 
 
+// 更新用户信息
+router.post('/user/all/api', AllApiController.getAllApiList);
 // 上传代码执行
 // router.post('/user/code', CodeController.getUserCode);
 

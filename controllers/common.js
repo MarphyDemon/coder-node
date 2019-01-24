@@ -25,12 +25,12 @@ class Common{
             }
         }
     }
-    static async runCode(req, user){
+    static async runCode(req,code, user){
         async function getStockPriceByName() {
             return await runPy.main(
                 user.username,
                 req.question_title,
-                req.result_code
+                code
             );
         }
         let res = await getStockPriceByName().then(function(result) {

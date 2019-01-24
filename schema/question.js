@@ -41,7 +41,7 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false,
             field: 'question_grade'
         },
-        // 题目难度
+        // 题目模版
         question_templete: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -66,6 +66,12 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: false,
             field: 'question_status',
+        },
+        // 题目状态
+        question_right_code: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            field: 'question_right_code',
         },
         createdAt: {
             type: DataTypes.DATE,

@@ -11,29 +11,34 @@ class TestCodeController {
     static async create(ctx) {
         let req = ctx.request.body;
         let user = await Common.getUserInfo(ctx);
-        let resBack,res;
+        let resBack,res,resRightBack;
         if (user.user_id && req.question_id) {
             let isExist = await TestCodeModal.getTestCodeDetail(user.user_id, req.question_id);
             if(isExist){
-                resBack = await Common.runCode(req, user);
-                let resultStatus = resBack.err?0:1;
-                await TestCodeModal.updateTestCode(isExist.id, req, resultStatus);
+                resRightBack = await Common.runCode(req, req.question_right_code, user);
+                resBack = await Common.runCode(req, req.result_code, user);
+                let result_status = resRightBack.stdout == resBack.stdout ? true : false;
+                let runResultStatus = resBack.err?0:1;
+                await TestCodeModal.updateTestCode(isExist.id, req, runResultStatus);
                 res = await TestCodeModal.TestCodeDetail(isExist.id);
                 ctx.response.status = 200;
-                ctx.body = statusCode.SUCCESS_200('提交成功！', {runRes:resBack,saveRes:res});
+                ctx.body = statusCode.SUCCESS_200('提交成功！', {runRes:resBack,saveRes:res, result_status: result_status});
             }else{
                 if (user.user_id
                     && req.question_id
                     && req.question_title            
                     && req.result_code
+                    && req.question_right_code
                 ) {
                     try {
-                        let resBack = await Common.runCode(req, user);
-                        let resultStatus = resBack.err?0:1;
-                        const createRes = await TestCodeModal.createTestCode(req, user.user_id,resultStatus);
+                        resRightBack = await Common.runCode(req, req.question_right_code, user);
+                        resBack = await Common.runCode(req, req.result_code, user);
+                        let result_status = resRightBack == resBack ? true : false;
+                        let runResultStatus = resBack.err?0:1;
+                        const createRes = await TestCodeModal.createTestCode(req, user.user_id,runResultStatus);
                         res = await TestCodeModal.TestCodeDetail(createRes.id);
                         ctx.response.status = 200;
-                        ctx.body = statusCode.SUCCESS_200('执行成功', {runRes:resBack,saveRes:res});
+                        ctx.body = statusCode.SUCCESS_200('执行成功', {runRes:resBack,saveRes:res, result_status: result_status});
                     } catch (err) {
                         ctx.response.status = 412;
                         ctx.body = statusCode.ERROR_412({
